@@ -5,11 +5,11 @@ uint8_t pulsePin[] = {8,9,10};
 //number of milliseconds to wait after pour before sending message
 unsigned int pourMsgDelay = 300;
 
-unsigned long pulseCount[numSensors];
+unsigned int pulseCount[numSensors];
+unsigned int kickedCount[numSensors];
 unsigned long nowTime;
 unsigned long lastPourTime = 0;
 unsigned long lastPinStateChangeTime[numSensors];
-boolean kicked[numSensors];
 int lastPinState[numSensors];
 
 unsigned long lastSend = 0;
@@ -25,7 +25,7 @@ void setup() {
   for( int i = 0; i < numSensors; i++ ) {
     pinMode(pulsePin[i], INPUT);
     digitalWrite(pulsePin[i], HIGH);
-    kicked[i] = false;
+    kickedCount[i] = 0;
     lastPinState[i] = digitalRead(pulsePin[i]);
   }
 }
@@ -33,13 +33,12 @@ void setup() {
 void loop() {
   nowTime = millis();
   pollPins();
-  if ( (nowTime - lastPourTime) > pourMsgDelay ) {
-    //this ensures that the last pour message is only sent once
-    if ( lastPourTime > 0 ) {
-      lastPourTime = 0;
-      checkPulseCount();
-    }
-    checkKicked();
+  if ( (nowTime - lastPourTime) > pourMsgDelay && lastPourTime > 0) {
+    //only send pour messages after all taps have stopped pulsing for a short period
+    //use lastPourTime=0 to ensure this code doesn't get run constantly
+    lastPourTime = 0;
+    checkPours();
+    checkKicks();
   }
 }
 
@@ -48,15 +47,12 @@ void pollPins() {
     int pinState = digitalRead(pulsePin[i]);
     if ( pinState != lastPinState[i] ) {
       if ( pinState == HIGH ) {
-        //don't count pulses for now if the keg was kicked
-        if (!kicked[i]) {
-          //check if the pour speed was > 1khz. Signals an empty keg
-          if( nowTime - lastPinStateChangeTime[i] > 0 ){
-            pulseCount[i] += 1;
-          }
-          else{
-            kicked[i] = true;
-          }
+        //separate high speed pulses to detect kicked kegs
+        if( nowTime - lastPinStateChangeTime[i] > 0 ){
+          pulseCount[i] ++;
+        }
+        else{
+          kickedCount[i] ++;
         }
         lastPinStateChangeTime[i] = nowTime;
         lastPourTime = nowTime;
@@ -66,22 +62,27 @@ void pollPins() {
   }
 }
 
-void checkPulseCount() {
+void checkPours() {
   for( int i = 0; i < numSensors; i++ ) {
     if ( pulseCount[i] > 0 ) {
+      if ( pulseCount[i] > 100 ) {
       //filter out tiny bursts
-      if ( pulseCount[i] > 100 )
         sendPulseCount(0, pulsePin[i], pulseCount[i]);
+      }
       pulseCount[i] = 0;
     }
   }
 }
 
-void checkKicked() {
+void checkKicks() {
   for( int i = 0; i < numSensors; i++ ) {
-    if ( kicked[i] ) {
-      sendKickedMsg(0, pulsePin[i]);
-      kicked[i] = false;
+    if ( kickedCount[i] > 0 ) {
+      if ( kickedCount[i] > 30 ) {
+        //if there are enough high speed pulses, send a kicked message
+        sendKickedMsg(0, pulsePin[i]);
+      }
+      //reset the counter if any high speed pulses exist
+      kickedCount[i] = 0;
     }
   }
 }
