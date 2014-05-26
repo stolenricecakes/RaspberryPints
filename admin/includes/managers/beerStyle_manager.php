@@ -31,4 +31,17 @@ class BeerStyleManager{
 		
 		return null;
 	}
+
+        function GetByName($name) {
+            $sql = "SELECT * FROM beerStyles WHERE name = '$name'";
+            $qry = mysql_query($sql);
+    
+            if ($i = mysql_fetch_array($qry) ) {
+              $beerStyle = new beerStyle();
+              $beerStyle->setFromArray($i);
+              return $beerStyle;
+            }
+            return null;
+        }
 }
+

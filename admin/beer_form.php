@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if(!isset( $_SESSION['myusername'] )){
 	header("location:index.php");
 }
@@ -13,15 +14,27 @@ require_once __DIR__.'/includes/models/beer.php';
 require_once __DIR__.'/includes/managers/beer_manager.php';
 require_once __DIR__.'/includes/managers/beerStyle_manager.php';
 
+require_once __DIR__.'/includes/utils/beer_utils.php';
+
 $htmlHelper = new HtmlHelper();
 $beerManager = new BeerManager();
 $beerStyleManager = new BeerStyleManager();
+$beerUtils = new BeerUtils();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$beer = new Beer();
-	$beer->setFromArray($_POST);
+        // do we have an BeerXML file, or just a regular post?
+        if (isset($_FILES['upfile']['tmp_name'])) {
+          $ary = $beerUtils->beerXmlToArray($_FILES['upfile']['tmp_name']); 
+          $beer->setFromArray($ary);
+        }
+        else {
+          // regular post.
+          $beer->setFromArray($_POST);
+        } 
 	$beerManager->Save($beer);
+        
 	redirect('beer_list.php');
 }
 
@@ -144,6 +157,22 @@ require __DIR__.'/header.php';
 		</div>
 
 	</form>
+        <hr size="2"/>
+        <form action="beer_form.php" enctype="multipart/form-data" method="POST">
+   	  <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+              <td>
+                  <b>BeerXML file:</b>
+              </td>
+              <td>
+                  <input name="upfile" type="file" value="Browse"/>
+	      </td>
+              <td>
+              <input name="save" type="submit" class="btn" value="Upload" />
+              </td>
+          </tr>
+          </table>
+        </form>
 	</div>
 	<!-- End On Tap Section -->
 
