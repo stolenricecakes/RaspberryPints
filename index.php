@@ -62,6 +62,7 @@
 	<head>
 		<title>RaspberryPints</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="refresh" content="600">
 
 		<!-- Set location of Cascading Style Sheet -->
 		<link rel="stylesheet" type="text/css" href="style.css">
@@ -71,6 +72,13 @@
 		<?php } ?>
 		
 		<link rel="shortcut icon" href="img/pint.ico">
+                <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+                <script>
+                   $(document).ready(function() {
+                      var tr7 = $("table tbody tr")[6];
+                      $(tr7).before("<tr><td class='altrow'>&nbsp;</td><td class='altrow'>&nbsp;</td><td class='altrow' colspan='2'><div class='brewroom-msg'>Taps 7 and 8 are located in the brew room</div></td><td class='altrow'>&nbsp</td></tr>");
+		   });
+                </script>
 	</head> 
 
 	<body>
@@ -298,27 +306,31 @@
 							
 								<?php if($config[ConfigNames::ShowSrmCol]){ ?>
 									<td class="srm">
+ <!--
 										<h3></h3>										
 										<div class="srm-container">
 											<div class="srm-indicator"></div>
 											<div class="srm-stroke"></div> 
 										</div>
-										
+
 										<h2></h2>
+-->
 									</td>
 								<?php } ?>
 							
 								<?php if($config[ConfigNames::ShowIbuCol]){ ?>
 									<td class="ibu">
+<!--
 										<h3></h3>										
 										<div class="ibu-container">
 											<div class="ibu-indicator"><div class="ibu-full" style="height:0%"></div></div>
 										</div>								
 										<h2></h2>
+-->
 									</td>
 								<?php } ?>
 							
-								<td class="name">
+								<td class="name" style="height:120px">
 									<h1>Nothing on tap</h1>
 									<h2 class="subhead"></h2>
 									<p></p>
@@ -326,11 +338,13 @@
 								
 								<?php if(($config[ConfigNames::ShowAbvCol]) && ($config[ConfigNames::ShowAbvImg])){ ?>
 									<td class="abv">
+<!--
 										<h3></h3>
 										<div class="abv-container">
 											<div class="abv-indicator"><div class="abv-full" style="height:0%"></div></div>
 										</div>
 										<h2></h2>
+-->
 									</td>
 								<?php } ?>
 
