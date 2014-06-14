@@ -74,9 +74,18 @@
 		<link rel="shortcut icon" href="img/pint.ico">
                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
                 <script>
+                   function formatDate() {
+                      var now = new Date();
+                      var str = now.toDateString() + " " + now.toLocaleTimeString();
+                      $("#currentTime").html(str); 
+                      setTimeout(formatDate, 200);
+                   }
+
                    $(document).ready(function() {
                       var tr7 = $("table tbody tr")[6];
                       $(tr7).before("<tr><td class='altrow'>&nbsp;</td><td class='altrow'>&nbsp;</td><td class='altrow' colspan='2'><div class='brewroom-msg'>Taps 7 and 8 are located in the brew room</div></td><td class='altrow'>&nbsp</td></tr>");
+
+                      formatDate();
 		   });
                 </script>
 	</head> 
@@ -104,10 +113,11 @@
 					</h1>
 				</div>
 				<div class="HeaderRight">
+                                        <div id="currentTime"></div>
 					<?php if($config[ConfigNames::UseHighResolution]) { ?>			
 						<a href="http://www.raspberrypints.com"><img src="img/RaspberryPints-4k.png" height="200" alt=""></a>
 					<?php } else { ?>
-						<a href="http://www.raspberrypints.com"><img src="img/RaspberryPints.png" height="100" alt=""></a>
+						<a href="http://www.raspberrypints.com"><img src="img/RaspberryPints.png" height="75" alt=""></a>
 					<?php } ?>
 				</div>
 			</div>
