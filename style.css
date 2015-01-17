@@ -10,7 +10,7 @@ body {
 }
 hr {
 	border: 0;
-	height: 1px;
+	height: 2px;
 	-webkit-margin-before: 2px;
 	-webkit-margin-after: 2px;
 	background-image: -webkit-linear-gradient(left, rgba(255,255,255,255), rgba(255,255,255,0.75), rgba(255,255,255,255)); 
@@ -40,6 +40,15 @@ h3 {
 	color: #A0A0A0;
 	font-weight: normal;
 	font-size: .8em;
+	-webkit-margin-before: 5px;
+	-webkit-margin-after: 5px;
+}
+
+h6 {
+	margin: 0;
+	color: #A0A0A0;
+	font-weight: normal;
+	font-size: .5em;
 	-webkit-margin-before: 5px;
 	-webkit-margin-after: 5px;
 }
@@ -310,4 +319,13 @@ table tr:nth-child(7) {
 #currentTime {
    font-family: arial;
    font-size: 10pt;
+}
+
+.top-border {
+  border-top: 1px dashed #808080;
+}
+
+.bottom-border {
+  border-bottom: 1px dashed #808080;
+  padding-bottom: 5px;
 }
