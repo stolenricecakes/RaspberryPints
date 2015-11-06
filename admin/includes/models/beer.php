@@ -4,12 +4,15 @@ require_once __DIR__.'/../functions.php';
 class Beer  
 {  
 	private $_id;  
+	private $_beerId;  
 	private $_name;
 	private $_beerStyleId;
 	private $_notes;
 	private $_og; 
 	private $_fg;  
 	private $_srm;  
+	private $_srmRgb;  
+	private $_tapNumber = "";  
 	private $_ibu;
 	private $_active;
 	private $_createdDate; 
@@ -19,6 +22,9 @@ class Beer
 
 	public function get_id(){ return $this->_id; }
 	public function set_id($_id){ $this->_id = $_id; }
+
+	public function get_beerId(){ return $this->_beerId; }
+	public function set_beerId($_id){ $this->_beerId = $_id; }
 
 	public function get_name(){ return $this->_name; }
 	public function set_name($_name){ $this->_name = $_name; }
@@ -38,6 +44,12 @@ class Beer
 	public function get_srm(){ return $this->_srm; }
 	public function set_srm($_srm){ $this->_srm = $_srm; }
 
+	public function get_srmRgb(){ return $this->_srmRgb; }
+	public function set_srmRgb($_srmRgb){ $this->_srmRgb = $_srmRgb; }
+
+	public function get_tapNumber(){ return $this->_tapNumber; }
+	public function set_tapNumber($_tapNumber){ $this->_tapNumber = $_tapNumber; }
+
 	public function get_ibu(){ return $this->_ibu; }
 	public function set_ibu($_ibu){ $this->_ibu = $_ibu; }
 	
@@ -54,6 +66,11 @@ class Beer
 	{  
 		if( isset($postArr['id']) )
 			$this->set_id($postArr['id']);
+		else
+			$this->set_id(null);
+
+		if( isset($postArr['beerId']) )
+			$this->set_beerId($postArr['beerId']);
 		else
 			$this->set_id(null);
 			
@@ -109,6 +126,10 @@ class Beer
 			$this->set_srm($postArr['srm']);
 		else
 			$this->set_srm(null);
+
+		if( isset($postArr['srmrgb']) )
+			$this->set_srmRgb($postArr['srmrgb']);
+
 			
 		if( isset($postArr['ibuAct']) )
 			$this->set_ibu($postArr['ibuAct']);
@@ -133,7 +154,14 @@ class Beer
 			$this->set_modifiedDate($postArr['modifiedDate']);
 		else
 			$this->set_modifiedDate(null);
+                if ( isset($postArr['tapNumber'])) {
+                   $this->set_tapNumber($postArr['tapNumber']);
+                }
+                else {
+                   $this->set_tapNumber("");
+                }
 	}  
+
 	
 	function toJson(){
 		return "{" . 
@@ -148,6 +176,25 @@ class Beer
 			"active: '" . $this->get_active() . "', " .
 			"createdDate: new Date('" . $this->get_createdDate() . "'), " .
 			"modifiedDate: new Date('" . $this->get_modifiedDate() . "') " .  
+		"}";
+	}
+
+	function toBetterJson(){
+		return "{" . 
+			"\"id\":" . $this->get_id() . ", " .
+			"\"beerId\":" . $this->get_beerId() . ", " .
+			"\"name\":\"" . encode($this->get_name()) . "\", " .
+			"\"beerStyleId\": " . $this->get_beerStyleId() . ", " .
+			"\"notes\": \"" . encode($this->get_notes()) . "\", " .
+			"\"srm\": " . $this->get_srm() . ", " .
+			"\"srmRgb\": \"" . $this->get_srmRgb() . "\", " .
+			"\"og\": " . $this->get_og() . ", " .
+			"\"fg\": " . $this->get_fg() . ", " .
+			"\"ibu\": " . $this->get_ibu() . ", " .
+			"\"tapNum\": \"" . $this->get_tapNumber() . "\", " .
+			"\"active\": \"" . $this->get_active() . "\", " .
+			"\"createdDate\": \"" . $this->get_createdDate() . "\"," .
+			"\"modifiedDate\":\"" . $this->get_modifiedDate() . "\"" .  
 		"}";
 	}
 }

@@ -3,6 +3,33 @@ require_once __DIR__.'/../../../includes/config_names.php';
 require_once __DIR__.'/../models/tap.php';
 
 class TapManager{
+        function Disassociate($tapNum) {
+           $sql="UPDATE taps SET active = 0, modifiedDate = NOW() WHERE active = 1 AND tapNumber = " . $tapNum;
+           mysql_query($sql);
+        }
+
+        function Associate($beerId, $tapNum) {
+           $sql="UPDATE taps SET active = 0, modifiedDate = NOW() WHERE active = 1 AND tapNumber = " . $tapNum;
+           mysql_query($sql);
+     
+
+           $sql="SELECT * FROM beers WHERE id = $beerId";
+	   $qry = mysql_query($sql);
+           $beer = mysql_fetch_array($qry);
+
+
+           $sql = "select max(id) from kegs where id not in (select kegId from taps where active = 1)";
+	   $qry = mysql_query($sql);
+           $kegId = mysql_fetch_array($qry)[0];
+           
+ 
+           $sql ="INSERT INTO taps(beerId, kegId, tapNumber, ogAct, fgAct, srmAct, ibuAct, startAmount, currentAmount, active, createdDate, modifiedDate ) " .
+           " values ( " . $beerId . "," . $kegId . ", " .
+           $tapNum . "," . $beer['ogEst'] . "," . $beer['fgEst'] . "," . $beer['srmEst'] . "," .
+           $beer['ibuEst'] . ",5,5,1,NOW(),NOW())";
+	
+           mysql_query($sql);		
+        }
 	
 	function Save($tap){
 		$sql = "";
@@ -96,4 +123,22 @@ class TapManager{
 		$sql="UPDATE kegs k, taps t SET k.kegStatusCode = 'NEEDS_CLEANING' WHERE t.kegId = k.id AND t.Id = $id";
 		mysql_query($sql);
 	}
+
+        function UpdateTapInfo($ary) {
+            $sql = "update beers " .
+                   " set name = '" . $ary['name'] . "', " .
+                   "     notes = '" . $ary['notes'] . "', " .
+                   "     modifiedDate = NOW() " .
+                   " where id = " . $ary['beerId'];
+            mysql_query($sql);
+
+            $sql = "update taps " .
+                   " set ogAct = " . $ary['og'] . ", " .
+                   "     fgAct = " . $ary['fg'] . ", " .
+                   "     ibuAct = " . $ary['ibu'] . ", " .
+                   "     srmAct = " . $ary['srm'] . ", " .
+                   "     modifiedDate = NOW() " .
+                   " where id = " . $ary['id'];
+            mysql_query($sql);
+        }
 }

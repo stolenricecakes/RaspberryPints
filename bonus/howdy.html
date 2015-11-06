@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="taps" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/custom.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="js/taps.js"></script>
+  </head>
+  <body ng-controller="TapsController">
+    <div class="row" ng-repeat="tap in tapList">
+      <div class="col-md-2 col-xs-2">
+        <span class="tapnum" style="background-color: rgb({{tap.beer.srmRgb}});">{{tap.tapNum}}</span>
+      </div>
+      <div class="col-md-6 col-xs-8">
+        <span class="beer-name">{{tap.beer.name}}</span>
+      </div>
+      <div class="col-md-4 col-xs-8">
+         <div ng-show="tap.beer.name">
+           <button ng-click="switch()" class="btn switch">Switch</button>
+           <button ng-click="edit(tap)" class="btn edit">Edit</button>
+         </div>
+         <div ng-hide="tap.beer.name">
+           <button ng-click="add(tap)" class="btn add">Add</button>
+         </div>
+      </div>
+    </div>
+    <h3>{{fart}}</h3>
+  </body>
+</html>

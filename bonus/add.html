@@ -1,0 +1,22 @@
+    <div class="jumbotron">
+        <h1>Add to tap {{tapNum}}</h1>
+    </div>
+    <div class="row {{beer.activeTapClass}} beer-list" ng-repeat="beer in beerList">
+      <div class="col-md-1 col-xs-1">
+        <span class="tapnum" style="background-color: rgb({{beer.srmRgb}});">{{beer.tapNum}}</span>
+      </div>
+      <div class="col-md-3 col-xs-7">
+        <span class="beer-name">{{beer.name}}</span>
+      </div>
+      <div class="col-md-2 col-xs-4">
+        <span class="date">{{beer.createdDate}}</span>
+      </div>
+      <div class="col-md-4 col-xs-8 col-xs-offset-1">
+        <a ng-click="toggleDetails(beer)">show details</a>
+        <span class="details">{{beer.visibleDetails}}</span>
+      </div>
+      <div class="col-md-2 col-xs-8 col-xs-offset-1" style="margin-top:10px">
+        <button ng-hide="{{beer.tapNum == tapNum}}" ng-click="associate(beer)" class="glyphicon glyphicon-ok">Associate</button>
+        <button ng-show="{{beer.tapNum}}" ng-click="kickIt(beer)" class="glyphicon glyphicon-remove">Kick</button>
+      </div>
+    </div>

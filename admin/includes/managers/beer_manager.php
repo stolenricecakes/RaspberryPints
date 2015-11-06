@@ -76,6 +76,24 @@ class BeerManager{
 
 		return null;
 	}
+
+	function GetBeerAndTapInfoByBeerId($id){
+		$sql="select b.id as beerId, t.id, b.name, b.beerStyleId, b.notes, " .
+                     " t.srmAct, t.ogAct, t.fgAct, t.ibuAct, t.tapNumber, t.active, t.createdDate, t.modifiedDate " .
+                     " from beers b, " .
+                     "      taps t " .
+                     " where b.id = t.beerId  " . 
+                     "   and b.id = $id";
+
+		$qry = mysql_query($sql);
+		
+		if( $i = mysql_fetch_array($qry) ){		
+			$beer = new Beer();
+			$beer->setFromArray($i);
+			return $beer;
+                }
+                return null;
+        }
 	
 	function Inactivate($id){
 		$sql = "SELECT * FROM taps WHERE beerId = $id AND active = 1";
@@ -91,5 +109,22 @@ class BeerManager{
 		$qry = mysql_query($sql);
 		
 		$_SESSION['successMessage'] = "Beer successfully deleted.";
+	}
+
+	function GetAllByCreate(){
+		$sql="SELECT b.*, s.rgb as srmrgb, t.tapNumber FROM beers b " .
+                     "LEFT JOIN srmRgb s ON s.srm = b.srmEst " .
+                     "LEFT JOIN taps t ON (b.id = t.beerId and t.active = 1) " .
+                     " ORDER BY createdDate desc, name asc";
+		$qry = mysql_query($sql);
+		
+		$beers = array();
+		while($i = mysql_fetch_array($qry)){
+			$beer = new Beer();
+			$beer->setFromArray($i);
+			$beers[$beer->get_id()] = $beer;		
+		}
+		
+		return $beers;
 	}
 }

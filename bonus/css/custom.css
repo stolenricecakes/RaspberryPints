@@ -1,0 +1,34 @@
+.tapnum {
+  font-size: 1.4em;
+}
+
+.beer-name {
+  font-size: 1.1em;
+}
+
+.beer-list {
+   margin-bottom: 15px;
+}
+
+.tap-list {
+   margin-top: 5px;
+   margin-bottom: 10px;
+   border-bottom: 1px solid #efefef;
+}
+
+.tap-list > div:first-child {
+  padding-left: 30px;
+}
+
+.beer-list .details {
+  padding: 5px;
+  color: #999999;
+}
+
+.edit-beer .row {
+  margin-bottom: 10px;
+}
+
+.jumbotron h1 {
+  padding-left: 20px;
+}

@@ -1,0 +1,25 @@
+    <div class="jumbotron">
+      <h1>manage the taps</h1>
+    </div> 
+    <div class="row tap-list" ng-repeat="tap in tapList">
+      <div class="col-sm-1 col-xs-2">
+        <span class="tapnum">{{tap.tapNum}}</span>
+      </div>
+      <div class="col-sm-1 col-xs-2 beer-color">
+        <span style="background-color: rgb({{tap.beer.srmRgb}}); width: 75%; display:inline-block;">
+          &nbsp;
+        </span>
+      </div>
+      <div class="col-sm-4 col-xs-8">
+        <span class="beer-name">{{tap.beer.name}}</span>
+      </div>
+      <div class="col-sm-6 col-xs-6 col-xs-offset-6">
+         <div ng-show="tap.beer.name">
+           <a href="#/add/{{tap.tapNum}}" class="btn add">Switch</a>
+           <a href="#/edit/{{tap.beer.beerId}}" class="btn edit">Edit</a>
+         </div>
+         <div ng-hide="tap.beer.name">
+           <a href="#/add/{{tap.tapNum}}" class="btn add">Add</a>
+         </div>
+      </div>
+    </div>
