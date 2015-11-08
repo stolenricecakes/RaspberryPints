@@ -24,7 +24,7 @@ class Beer
 	public function set_id($_id){ $this->_id = $_id; }
 
 	public function get_beerId(){ return $this->_beerId; }
-	public function set_beerId($_id){ $this->_beerId = $_id; }
+	public function set_beerId($_beerId){ $this->_beerId = $_beerId; }
 
 	public function get_name(){ return $this->_name; }
 	public function set_name($_name){ $this->_name = $_name; }
@@ -72,7 +72,7 @@ class Beer
 		if( isset($postArr['beerId']) )
 			$this->set_beerId($postArr['beerId']);
 		else
-			$this->set_id(null);
+			$this->set_beerId(null);
 			
 		if( isset($postArr['name']) )
 			$this->set_name($postArr['name']);
@@ -181,7 +181,25 @@ class Beer
 
 	function toBetterJson(){
 		return "{" . 
-			"\"id\":" . $this->get_id() . ", " .
+                        "\"id\":" . $this->get_id() . ", " .
+			"\"name\":\"" . encode($this->get_name()) . "\", " .
+			"\"beerStyleId\": " . $this->get_beerStyleId() . ", " .
+			"\"notes\": \"" . encode($this->get_notes()) . "\", " .
+			"\"srm\": " . $this->get_srm() . ", " .
+			"\"srmRgb\": \"" . $this->get_srmRgb() . "\", " .
+			"\"og\": " . $this->get_og() . ", " .
+			"\"fg\": " . $this->get_fg() . ", " .
+			"\"ibu\": " . $this->get_ibu() . ", " .
+			"\"tapNum\": \"" . $this->get_tapNumber() . "\", " .
+			"\"active\": \"" . $this->get_active() . "\", " .
+			"\"createdDate\": \"" . $this->get_createdDate() . "\"," .
+			"\"modifiedDate\":\"" . $this->get_modifiedDate() . "\"" .  
+		"}";
+	}
+
+	function toBetterJsonWithBeerId(){
+		return "{" . 
+                        "\"id\":" . $this->get_id() . ", " .
 			"\"beerId\":" . $this->get_beerId() . ", " .
 			"\"name\":\"" . encode($this->get_name()) . "\", " .
 			"\"beerStyleId\": " . $this->get_beerStyleId() . ", " .
@@ -197,4 +215,5 @@ class Beer
 			"\"modifiedDate\":\"" . $this->get_modifiedDate() . "\"" .  
 		"}";
 	}
+        
 }

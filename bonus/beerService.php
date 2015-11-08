@@ -16,7 +16,7 @@ if (isset($_POST['beerId'])) {
 else if (isset($_GET['id'])) {
     //$beer = $beerManager->GetById($_GET['id']);
     $beer = $beerManager->GetBeerAndTapInfoByBeerId($_GET['id']);
-    echo $beer->toBetterJson();
+    echo $beer->toBetterJsonWithBeerId();
 }
 else {
     $beers = $beerManager->GetAllByCreate();

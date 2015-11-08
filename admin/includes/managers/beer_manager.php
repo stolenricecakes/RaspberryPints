@@ -83,6 +83,7 @@ class BeerManager{
                      " from beers b, " .
                      "      taps t " .
                      " where b.id = t.beerId  " . 
+                     "   and t.active = 1 " .
                      "   and b.id = $id";
 
 		$qry = mysql_query($sql);

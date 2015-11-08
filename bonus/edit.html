@@ -20,14 +20,15 @@
   </div>
   <div class="row">
     <div class="col-md-2 col-xs-12">SRM:</div>
-    <div class="col-md-10 col-xs-12"><input type="number" step=".1"  ng-model="beer.srm"/></div>
+    <div class="col-sm-3 col-xs-8"><input type="number"  step=".1"  ng-model="beer.srm" style="color: black"/></div>
+    <div class="col-sm-1 col-xs-2" style="background-color: rgb({{lookup(beer.srm)}});">&nbsp;</div>
   </div>
   <div class="row">
     <div class="col-md-2 col-xs-12">Notes:</div>
     <div class="col-md-10 col-xs-12"><textarea rows="6" cols="30" ng-model="beer.notes"></textarea></div>
   </div>
   <div class="row">
-    <button class="btn btn-primary col-md-4 col-md-offset-1 col-xs-12" ng-click="save(beer)">Save</button>
+    <button class="btn btn-primary col-md-4 col-md-offset-1 col-xs-10 col-xs-offset-1" ng-click="save(beer)">Save</button>
   </div>
   <!-- output the srm RGB?? -->
 </div>
